@@ -4,12 +4,12 @@ const logger = createLogger({
     level: 'info',
     format: format.combine(
         format.timestamp(),
-        format.json()  // Output logs in JSON format for better parsing
+        format.json() 
     ),
     transports: [
         new transports.File({ filename: 'logs/error.log', level: 'error' }),
         new transports.File({ filename: 'logs/combined.log' }),
-        new transports.Console({ format: format.simple() })  // Log to console in a human-readable format
+        new transports.Console({ format: format.simple() })
     ]
 });
 

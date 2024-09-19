@@ -1,8 +1,8 @@
-require('dotenv').config();  // Load environment variables from .env file
+require('dotenv').config();
 
 module.exports = {
     port: process.env.PORT || 3000,
-    secretKey: process.env.SECRET_KEY,  // For token signing
+    secretKey: process.env.SECRET_KEY,
     services: {
         userServiceUrl: process.env.USER_SERVICE_URL,
         billingServiceUrl: process.env.BILLING_SERVICE_URL,

@@ -1,23 +1,32 @@
 const express = require('express');
-const publicRoutes = require('./routes/publicRoutes');
-const protectedRoutes = require('./routes/protectedRoutes');
+const cors = require('cors');
 const errorHandler = require('./middleware/errorHandler');
 const requestLogger = require('./middleware/requestLogger');
 const authMiddleware = require('./middleware/authMiddleware');
+const requestHandler = require('./services/requestHandler');
 const rateLimit = require('./config/rateLimit');
 
 const app = express();
+
+require('dotenv').config();
+
+const corsOptions = {
+    origin: ["*"],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], 
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+    credentials: true  
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
-app.use(requestLogger);  // Log requests
-app.use(rateLimit);      // Rate limit requests
+app.use(requestLogger);  
+app.use(rateLimit);     
 
-// Public routes that don't require token validation
-app.use('/api', publicRoutes);
+app.use('/api', authMiddleware);
 
-// Protected routes that require token validation
-app.use('/api', authMiddleware, protectedRoutes);
+app.use('/api', requestHandler);
 
-// Global error handler
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
